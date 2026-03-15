@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { siteConfig, navItems } from "@/data/site";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { TantiaFullLogo } from "@/components/TantiaFullLogo";
 
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -40,18 +40,8 @@ export function Header() {
         aria-label="Main navigation"
       >
         {/* Logo */}
-        <a href="#" className="flex items-center gap-2.5 transition-opacity hover:opacity-80">
-          <Image
-            src="/tantia-logo.svg"
-            alt=""
-            width={32}
-            height={32}
-            className="h-8 w-8"
-            priority
-          />
-          <span className="text-lg font-semibold tracking-tight">
-            {siteConfig.name.split(" ")[0]}
-          </span>
+        <a href="#" className="flex items-center transition-opacity hover:opacity-80" aria-label="Tantia — Home">
+          <TantiaFullLogo height={32} />
         </a>
 
         {/* Desktop nav */}
