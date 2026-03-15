@@ -1,0 +1,45 @@
+<svg width="64" height="64" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="hex-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00c8ff" />
+      <stop offset="100%" stop-color="#00d4aa" />
+    </linearGradient>
+    <linearGradient id="hex-fill" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00c8ff" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#00d4aa" stop-opacity="0.05" />
+    </linearGradient>
+  </defs>
+  <!-- Hexagon -->
+  <polygon
+    points="60,8 106,32 106,78 60,102 14,78 14,32"
+    fill="url(#hex-fill)"
+    stroke="url(#hex-grad)"
+    stroke-width="3"
+    stroke-linejoin="round"
+  />
+  <!-- Inner hexagon -->
+  <polygon
+    points="60,20 94,38 94,72 60,90 26,72 26,38"
+    fill="none"
+    stroke="url(#hex-grad)"
+    stroke-width="0.8"
+    opacity="0.3"
+    stroke-linejoin="round"
+  />
+  <!-- T letterform -->
+  <path
+    d="M38 36h44M60 36v38"
+    stroke="url(#hex-grad)"
+    stroke-width="6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill="none"
+  />
+  <!-- Vertex dots -->
+  <circle cx="60" cy="8" r="3" fill="#00c8ff" />
+  <circle cx="106" cy="32" r="2.5" fill="#00c8ff" opacity="0.6" />
+  <circle cx="106" cy="78" r="2.5" fill="#00d4aa" opacity="0.6" />
+  <circle cx="60" cy="102" r="3" fill="#00d4aa" />
+  <circle cx="14" cy="78" r="2.5" fill="#00d4aa" opacity="0.6" />
+  <circle cx="14" cy="32" r="2.5" fill="#00c8ff" opacity="0.6" />
+</svg>

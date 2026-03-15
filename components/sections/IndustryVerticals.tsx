@@ -1,13 +1,11 @@
 "use client";
 
-import { LazyMotion, domAnimation } from "framer-motion";
 import { MotionDiv } from "@/components/motion/MotionDiv";
 import { industries } from "@/data/industries";
 
 export function IndustryVerticals() {
   return (
-    <LazyMotion features={domAnimation}>
-      <section className="section-accent py-24" id="industries">
+    <section className="section-accent py-24" id="industries">
         <div className="mx-auto max-w-6xl px-6">
           <MotionDiv>
             <div className="mb-16 text-center">
@@ -48,7 +46,6 @@ export function IndustryVerticals() {
             ))}
           </div>
         </div>
-      </section>
-    </LazyMotion>
+    </section>
   );
 }

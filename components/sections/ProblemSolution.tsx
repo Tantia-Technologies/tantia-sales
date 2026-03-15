@@ -1,6 +1,5 @@
 "use client";
 
-import { LazyMotion, domAnimation } from "framer-motion";
 import { MotionDiv } from "@/components/motion/MotionDiv";
 import {
   AlertTriangle,
@@ -63,8 +62,7 @@ const solutions = [
 
 export function ProblemSolution() {
   return (
-    <LazyMotion features={domAnimation}>
-      <section className="section-high-contrast py-24" id="problem-solution">
+    <section className="section-high-contrast py-24" id="problem-solution">
         <div className="relative z-10 mx-auto max-w-6xl px-6">
           <MotionDiv>
             <div className="mb-16 text-center">
@@ -139,7 +137,6 @@ export function ProblemSolution() {
             </div>
           </div>
         </div>
-      </section>
-    </LazyMotion>
+    </section>
   );
 }

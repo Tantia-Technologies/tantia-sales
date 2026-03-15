@@ -1,6 +1,5 @@
 "use client";
 
-import { LazyMotion, domAnimation } from "framer-motion";
 import { MotionDiv } from "@/components/motion/MotionDiv";
 import { pricingTiers } from "@/data/pricing";
 import { Check } from "lucide-react";
@@ -8,8 +7,7 @@ import { cn } from "@/lib/utils";
 
 export function PricingSection() {
   return (
-    <LazyMotion features={domAnimation}>
-      <section className="py-24" id="pricing">
+    <section className="py-24" id="pricing">
         <div className="mx-auto max-w-6xl px-6">
           <MotionDiv>
             <div className="mb-16 text-center">
@@ -89,7 +87,6 @@ export function PricingSection() {
             ))}
           </div>
         </div>
-      </section>
-    </LazyMotion>
+    </section>
   );
 }

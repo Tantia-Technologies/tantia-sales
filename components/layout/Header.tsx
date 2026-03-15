@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { siteConfig, navItems } from "@/data/site";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -38,10 +40,15 @@ export function Header() {
         aria-label="Main navigation"
       >
         {/* Logo */}
-        <a href="#" className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-            <span className="text-sm font-bold text-primary-foreground">T</span>
-          </div>
+        <a href="#" className="flex items-center gap-2.5 transition-opacity hover:opacity-80">
+          <Image
+            src="/tantia-logo.svg"
+            alt=""
+            width={32}
+            height={32}
+            className="h-8 w-8"
+            priority
+          />
           <span className="text-lg font-semibold tracking-tight">
             {siteConfig.name.split(" ")[0]}
           </span>
@@ -63,6 +70,7 @@ export function Header() {
 
         {/* Desktop CTAs */}
         <div className="hidden items-center gap-3 md:flex">
+          <ThemeToggle />
           <a
             href={siteConfig.links.app}
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
@@ -77,16 +85,19 @@ export function Header() {
           </a>
         </div>
 
-        {/* Mobile hamburger */}
-        <button
-          type="button"
-          className="p-2 text-muted-foreground transition-colors hover:text-foreground md:hidden"
-          onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label={mobileOpen ? "Close menu" : "Open menu"}
-          aria-expanded={mobileOpen}
-        >
-          {mobileOpen ? <X size={22} /> : <Menu size={22} />}
-        </button>
+        {/* Mobile right side */}
+        <div className="flex items-center gap-2 md:hidden">
+          <ThemeToggle />
+          <button
+            type="button"
+            className="p-2 text-muted-foreground transition-colors hover:text-foreground"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileOpen}
+          >
+            {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
       </nav>
 
       {/* Mobile menu */}

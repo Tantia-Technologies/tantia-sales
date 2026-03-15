@@ -1,6 +1,5 @@
 "use client";
 
-import { LazyMotion, domAnimation } from "framer-motion";
 import { MotionDiv } from "@/components/motion/MotionDiv";
 import {
   Accordion,
@@ -12,8 +11,7 @@ import { faqItems } from "@/data/faq";
 
 export function FAQSection() {
   return (
-    <LazyMotion features={domAnimation}>
-      <section className="py-24" id="faq">
+    <section className="py-24" id="faq">
         <div className="mx-auto max-w-3xl px-6">
           <MotionDiv>
             <div className="mb-12 text-center">
@@ -41,7 +39,6 @@ export function FAQSection() {
             </Accordion>
           </MotionDiv>
         </div>
-      </section>
-    </LazyMotion>
+    </section>
   );
 }

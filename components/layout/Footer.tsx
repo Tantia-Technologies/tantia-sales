@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { siteConfig } from "@/data/site";
 
 const footerLinks = {
@@ -34,11 +35,13 @@ export function Footer() {
           {/* Brand */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-                <span className="text-sm font-bold text-primary-foreground">
-                  T
-                </span>
-              </div>
+              <Image
+                src="/tantia-logo.svg"
+                alt=""
+                width={32}
+                height={32}
+                className="h-8 w-8"
+              />
               <span className="text-lg font-semibold tracking-tight">
                 Tantia
               </span>

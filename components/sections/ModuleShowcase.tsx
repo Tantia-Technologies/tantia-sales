@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { LazyMotion, domAnimation } from "framer-motion";
 import { MotionDiv } from "@/components/motion/MotionDiv";
 import {
   modules,
@@ -23,8 +22,7 @@ export function ModuleShowcase() {
   const filtered = modules.filter((m) => m.category === active);
 
   return (
-    <LazyMotion features={domAnimation}>
-      <section className="section-dark-primary py-24" id="features">
+    <section className="section-dark-primary py-24" id="features">
         <div className="relative z-10 mx-auto max-w-6xl px-6">
           <MotionDiv>
             <div className="mb-4 text-center">
@@ -87,7 +85,6 @@ export function ModuleShowcase() {
             ))}
           </div>
         </div>
-      </section>
-    </LazyMotion>
+    </section>
   );
 }

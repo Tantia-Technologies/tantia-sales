@@ -1,14 +1,12 @@
 "use client";
 
-import { LazyMotion, domAnimation } from "framer-motion";
 import { MotionDiv } from "@/components/motion/MotionDiv";
 import { agents } from "@/data/agents";
 import { Brain } from "lucide-react";
 
 export function AIAgents() {
   return (
-    <LazyMotion features={domAnimation}>
-      <section className="relative overflow-hidden py-24" id="ai">
+    <section className="relative overflow-hidden py-24" id="ai">
         {/* Cyan glow background */}
         <div className="pointer-events-none absolute inset-0">
           <div
@@ -111,7 +109,6 @@ export function AIAgents() {
             </div>
           </MotionDiv>
         </div>
-      </section>
-    </LazyMotion>
+    </section>
   );
 }

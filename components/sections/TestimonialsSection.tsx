@@ -1,6 +1,5 @@
 "use client";
 
-import { LazyMotion, domAnimation } from "framer-motion";
 import { MotionDiv } from "@/components/motion/MotionDiv";
 import { Quote } from "lucide-react";
 
@@ -30,8 +29,7 @@ const testimonials = [
 
 export function TestimonialsSection() {
   return (
-    <LazyMotion features={domAnimation}>
-      <section className="section-high-contrast py-24">
+    <section className="section-high-contrast py-24">
         <div className="relative z-10 mx-auto max-w-6xl px-6">
           <MotionDiv>
             <div className="mb-16 text-center">
@@ -76,7 +74,6 @@ export function TestimonialsSection() {
             ))}
           </div>
         </div>
-      </section>
-    </LazyMotion>
+    </section>
   );
 }

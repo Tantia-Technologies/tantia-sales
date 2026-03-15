@@ -1,12 +1,10 @@
 "use client";
 
-import { LazyMotion, domAnimation } from "framer-motion";
 import { MotionDiv } from "@/components/motion/MotionDiv";
 
 export function CTASection() {
   return (
-    <LazyMotion features={domAnimation}>
-      <section className="section-cta-blue">
+    <section className="section-cta-blue">
         <div className="mx-auto max-w-4xl px-6 py-12 text-center">
           <MotionDiv>
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
@@ -36,7 +34,6 @@ export function CTASection() {
             </div>
           </MotionDiv>
         </div>
-      </section>
-    </LazyMotion>
+    </section>
   );
 }
