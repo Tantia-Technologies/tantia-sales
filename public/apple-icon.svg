@@ -4,49 +4,25 @@
       <stop offset="0%" stop-color="#00c8ff" />
       <stop offset="100%" stop-color="#00d4aa" />
     </linearGradient>
-    <linearGradient id="ai-fill" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#00c8ff" stop-opacity="0.15" />
-      <stop offset="100%" stop-color="#00d4aa" stop-opacity="0.05" />
-    </linearGradient>
   </defs>
-
-  <!-- Navy background with rounded corners for Apple touch -->
   <rect width="180" height="180" rx="36" fill="#0a1628" />
-
-  <!-- Hexagon -->
   <polygon
     points="90,30 148,62 148,118 90,150 32,118 32,62"
-    fill="url(#ai-fill)"
-    stroke="url(#ai-grad)"
-    stroke-width="3"
-    stroke-linejoin="round"
-  />
-
-  <!-- Inner hexagon -->
-  <polygon
-    points="90,45 136,70 136,110 90,135 44,110 44,70"
     fill="none"
     stroke="url(#ai-grad)"
-    stroke-width="0.8"
-    opacity="0.25"
+    stroke-width="2.5"
     stroke-linejoin="round"
+    opacity="0.5"
   />
-
-  <!-- T letterform -->
-  <path
-    d="M62 68h56M90 68v48"
-    stroke="url(#ai-grad)"
+  <polyline
+    points="67,60 90,72 113,60"
+    stroke="#00c8ff"
     stroke-width="7"
     stroke-linecap="round"
     stroke-linejoin="round"
     fill="none"
   />
-
-  <!-- Vertex dots -->
+  <line x1="90" y1="72" x2="90" y2="135" stroke="#00d4aa" stroke-width="7" stroke-linecap="round" />
   <circle cx="90" cy="30" r="4" fill="#00c8ff" />
-  <circle cx="148" cy="62" r="3" fill="#00c8ff" opacity="0.6" />
-  <circle cx="148" cy="118" r="3" fill="#00d4aa" opacity="0.6" />
   <circle cx="90" cy="150" r="4" fill="#00d4aa" />
-  <circle cx="32" cy="118" r="3" fill="#00d4aa" opacity="0.6" />
-  <circle cx="32" cy="62" r="3" fill="#00c8ff" opacity="0.6" />
 </svg>
