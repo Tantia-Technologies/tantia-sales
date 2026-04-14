@@ -1,28 +1,16 @@
-<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180">
   <defs>
-    <linearGradient id="ai-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="brand-grad" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#00c8ff" />
       <stop offset="100%" stop-color="#00d4aa" />
     </linearGradient>
   </defs>
   <rect width="180" height="180" rx="36" fill="#0a1628" />
-  <polygon
-    points="90,30 148,62 148,118 90,150 32,118 32,62"
-    fill="none"
-    stroke="url(#ai-grad)"
-    stroke-width="2.5"
-    stroke-linejoin="round"
-    opacity="0.5"
-  />
-  <polyline
-    points="67,60 90,72 113,60"
-    stroke="#00c8ff"
-    stroke-width="7"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    fill="none"
-  />
-  <line x1="90" y1="72" x2="90" y2="135" stroke="#00d4aa" stroke-width="7" stroke-linecap="round" />
-  <circle cx="90" cy="30" r="4" fill="#00c8ff" />
-  <circle cx="90" cy="150" r="4" fill="#00d4aa" />
+  <g transform="translate(30, 30) scale(1.52)">
+    <path fill="url(#brand-grad)" d="M19.76,19.76h19.76v19.76h0c-10.91,0-19.76-8.86-19.76-19.76h0Z" />
+    <path fill="#fff"
+      d="M39.53,39.53v19.76h-19.76V0C8.85,0,0,8.85,0,19.76v39.53c0,10.92,8.85,19.76,19.76,19.76h39.53v-19.76h0c0-10.92-8.85-19.76-19.76-19.76Z" />
+    <polygon fill="url(#brand-grad)"
+      points="59.29 0 39.53 0 19.76 0 19.76 19.76 39.53 19.76 59.29 19.76 59.29 39.53 59.29 59.29 59.29 79.06 79.06 79.06 79.06 59.29 79.06 39.53 79.06 19.76 79.06 0 59.29 0" />
+  </g>
 </svg>

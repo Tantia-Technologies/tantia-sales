@@ -1,11 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { GeistSans } from "geist/font/sans";
-import { GeistMono } from "geist/font/mono";
-import "@fontsource/plus-jakarta-sans/400.css";
-import "@fontsource/plus-jakarta-sans/500.css";
-import "@fontsource/plus-jakarta-sans/600.css";
-import "@fontsource/plus-jakarta-sans/700.css";
+import { Montserrat, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
+
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+});
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { MotionProvider } from "@/components/MotionProvider";
@@ -46,9 +52,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Tantia Technologies" }],
   creator: "Tantia Technologies",
   icons: {
-    icon: [
-      { url: "/tantia-logo.svg", type: "image/svg+xml" },
-    ],
+    icon: [{ url: "/tantia-logo.svg", type: "image/svg+xml" }],
     apple: [
       { url: "/apple-icon.svg", sizes: "180x180", type: "image/svg+xml" },
     ],
@@ -80,7 +84,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${GeistSans.variable} ${GeistMono.variable}`}
+      className={`${montserrat.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
     >
       <body className="min-h-screen font-sans antialiased">

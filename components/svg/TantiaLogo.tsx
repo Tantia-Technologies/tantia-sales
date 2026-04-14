@@ -9,6 +9,8 @@ interface TantiaLogoProps {
 
 const CX = 60;
 const CY = 55;
+const ICON_TX = 20.47;
+const ICON_TY = 15.47;
 
 const ORBITS = [
   { rx: 72, ry: 24, rotate: -30, duration: 6, color: "#00c8ff", delay: 0 },
@@ -25,14 +27,13 @@ function ellipseToPath(cx: number, cy: number, rx: number, ry: number): string {
   ].join(" ");
 }
 
-function OrbitParticle({ orbit, index, clip }: {
+function OrbitParticle({ orbit, index }: {
   orbit: (typeof ORBITS)[number];
   index: number;
-  clip: string;
 }) {
   const pathId = `nx-orbit-${index}`;
   return (
-    <g clipPath={`url(#${clip})`}>
+    <g>
       <circle r="10" fill={orbit.color} opacity="0.35" filter="url(#nx-particle-glow)">
         <animateMotion
           dur={`${orbit.duration}s`}
@@ -55,6 +56,32 @@ function OrbitParticle({ orbit, index, clip }: {
           <mpath href={`#${pathId}`} />
         </animateMotion>
       </circle>
+    </g>
+  );
+}
+
+function IconMark({ glow }: { glow?: boolean }) {
+  return (
+    <g
+      transform={`translate(${ICON_TX}, ${ICON_TY})`}
+      filter={glow ? "url(#nx-outer-glow)" : undefined}
+      opacity={glow ? 0.25 : 1}
+    >
+      <path
+        d="M19.76,19.76h19.76v19.76h0c-10.91,0-19.76-8.86-19.76-19.76h0Z"
+        fill="url(#nx-grad)"
+      />
+      <path
+        d="M39.53,39.53v19.76h-19.76V0C8.85,0,0,8.85,0,19.76v39.53c0,10.92,8.85,19.76,19.76,19.76h39.53v-19.76h0c0-10.92-8.85-19.76-19.76-19.76Z"
+        fill="url(#nx-grad-fill)"
+        stroke="url(#nx-grad)"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+      <polygon
+        points="59.29 0 39.53 0 19.76 0 19.76 19.76 39.53 19.76 59.29 19.76 59.29 39.53 59.29 59.29 59.29 79.06 79.06 79.06 79.06 59.29 79.06 39.53 79.06 19.76 79.06 0 59.29 0"
+        fill="url(#nx-grad)"
+      />
     </g>
   );
 }
@@ -100,15 +127,6 @@ export function TantiaLogo({ className, size = 140 }: TantiaLogoProps) {
               fill="none"
             />
           ))}
-
-          <clipPath id="nx-clip-behind">
-            <rect x="-100" y="-100" width="320" height="320" />
-            <polygon points="60,8 106,32 106,78 60,102 14,78 14,32" clipRule="evenodd" />
-          </clipPath>
-
-          <clipPath id="nx-clip-front">
-            <polygon points="60,8 106,32 106,78 60,102 14,78 14,32" />
-          </clipPath>
         </defs>
 
         {ORBITS.map((o, i) => (
@@ -127,50 +145,11 @@ export function TantiaLogo({ className, size = 140 }: TantiaLogoProps) {
         ))}
 
         {ORBITS.map((o, i) => (
-          <OrbitParticle key={`behind-${i}`} orbit={o} index={i} clip="nx-clip-behind" />
+          <OrbitParticle key={`particle-${i}`} orbit={o} index={i} />
         ))}
 
-        <polygon
-          points="60,4 110,30 110,78 60,102 10,80 10,30"
-          fill="none"
-          stroke="url(#nx-grad)"
-          strokeWidth="2"
-          opacity="0.2"
-          filter="url(#nx-outer-glow)"
-        />
-        <polygon
-          points="60,8 106,32 106,78 60,102 14,78 14,32"
-          fill="url(#nx-grad-fill)"
-          stroke="url(#nx-grad)"
-          strokeWidth="2.5"
-          strokeLinejoin="round"
-        />
-        <polygon
-          points="60,20 94,38 94,72 60,90 26,72 26,38"
-          fill="none"
-          stroke="url(#nx-grad)"
-          strokeWidth="0.8"
-          opacity="0.3"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M38 36h44M60 36v38"
-          fill="none"
-          stroke="url(#nx-grad)"
-          strokeWidth="5.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <circle cx="60" cy="8" r="3" fill="#00c8ff" />
-        <circle cx="106" cy="32" r="2.5" fill="#00c8ff" opacity="0.6" />
-        <circle cx="106" cy="78" r="2.5" fill="#00d4aa" opacity="0.6" />
-        <circle cx="60" cy="102" r="3" fill="#00d4aa" />
-        <circle cx="14" cy="78" r="2.5" fill="#00d4aa" opacity="0.6" />
-        <circle cx="14" cy="32" r="2.5" fill="#00c8ff" opacity="0.6" />
-
-        {ORBITS.map((o, i) => (
-          <OrbitParticle key={`front-${i}`} orbit={o} index={i} clip="nx-clip-front" />
-        ))}
+        <IconMark glow />
+        <IconMark />
       </m.svg>
     </m.div>
   );

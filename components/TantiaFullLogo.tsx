@@ -6,7 +6,13 @@ interface TantiaFullLogoProps {
   iconOnly?: boolean;
 }
 
-function ChevronHexIcon({ size, className }: { size: number; className?: string }) {
+function ChevronHexIcon({
+  size,
+  className,
+}: {
+  size: number;
+  className?: string;
+}) {
   return (
     <svg
       width={size}
@@ -24,7 +30,10 @@ function ChevronHexIcon({ size, className }: { size: number; className?: string 
         </linearGradient>
         <filter id="tfl-gl">
           <feGaussianBlur stdDeviation="3" result="b" />
-          <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+          <feMerge>
+            <feMergeNode in="b" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
         </filter>
       </defs>
       <polygon
@@ -45,7 +54,15 @@ function ChevronHexIcon({ size, className }: { size: number; className?: string 
           strokeLinejoin="round"
           fill="none"
         />
-        <line x1="60" y1="40" x2="60" y2="82" stroke="#00d4aa" strokeWidth="5" strokeLinecap="round" />
+        <line
+          x1="60"
+          y1="40"
+          x2="60"
+          y2="82"
+          stroke="#00d4aa"
+          strokeWidth="5"
+          strokeLinecap="round"
+        />
       </g>
       <circle cx="60" cy="8" r="2.5" fill="#00c8ff" />
       <circle cx="60" cy="102" r="2.5" fill="#00d4aa" />
@@ -53,7 +70,11 @@ function ChevronHexIcon({ size, className }: { size: number; className?: string 
   );
 }
 
-export function TantiaFullLogo({ className, height = 32, iconOnly = false }: TantiaFullLogoProps) {
+export function TantiaFullLogo({
+  className,
+  height = 32,
+  iconOnly = false,
+}: TantiaFullLogoProps) {
   if (iconOnly) {
     return <ChevronHexIcon size={height} className={className} />;
   }
@@ -61,11 +82,18 @@ export function TantiaFullLogo({ className, height = 32, iconOnly = false }: Tan
   const fontSize = height * 0.65;
 
   return (
-    <span className={cn("inline-flex shrink-0 items-center gap-2.5", className)}>
+    <span
+      className={cn("inline-flex shrink-0 items-center gap-2.5", className)}
+    >
       <ChevronHexIcon size={height} />
       <span
         className="font-semibold tracking-wide text-current"
-        style={{ fontSize, fontFamily: "'Plus Jakarta Sans', var(--font-jakarta), var(--font-geist-sans), system-ui, sans-serif", letterSpacing: "0.5px" }}
+        style={{
+          fontSize,
+          fontFamily:
+            "Montserrat, var(--font-montserrat), system-ui, sans-serif",
+          letterSpacing: "0.5px",
+        }}
       >
         Tantia
       </span>
