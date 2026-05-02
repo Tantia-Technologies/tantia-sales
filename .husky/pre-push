@@ -1,0 +1,150 @@
+#!/usr/bin/env sh
+
+# =============================================================================
+# Tantia shared pre-push hook (v1.3)
+# Source: ~/Repos/Tantia/tools/hooks/pre-push
+#
+# Goals:
+#   1. Block pushes that touch locked auth files without TANTIA_AUTH_UNLOCK=1
+#   2. Mirror what Vercel will run locally (check:strings + typecheck + test + build)
+#      so failed builds don't burn paid CI minutes.
+#   3. Enforce mandatory TDD across the ecosystem (test script required, must pass).
+#
+# In v1.3 the build/test gate is delegated to `tantia hooks verify` when the
+# `tantia` binary is available (provided by @tantia-technologies/dev-tools).
+# When the binary is missing (fresh clone, before `pnpm install`) we fall
+# back to the legacy inline sequence so nobody is bricked.
+#
+# Escape hatch (use at your own risk): git push --no-verify
+# =============================================================================
+
+set -e
+
+# =============================================================================
+# Guard 0: locked auth files (defense in depth)
+# =============================================================================
+LOCKED_PATTERNS='
+apps/shell/lib/auth.ts
+apps/shell/proxy.ts
+apps/shell/app/(erp)/layout.tsx
+apps/shell/lib/auth/platform-admin.ts
+apps/shell/lib/routes/index.ts
+apps/shell/lib/auth-options.test.ts
+'
+
+REMOTE="${1:-origin}"
+BRANCH="$(git symbolic-ref --short HEAD 2>/dev/null || echo main)"
+UPSTREAM_RANGE="$REMOTE/$BRANCH..HEAD"
+if ! git rev-parse --verify "$REMOTE/$BRANCH" >/dev/null 2>&1; then
+  UPSTREAM_RANGE="HEAD"
+fi
+CHANGED="$(git diff --name-only "$UPSTREAM_RANGE" 2>/dev/null || true)"
+
+AUTH_HIT=""
+for pattern in $LOCKED_PATTERNS; do
+  [ -z "$pattern" ] && continue
+  match="$(printf '%s\n' "$CHANGED" | grep -Fx "$pattern" || true)"
+  if [ -n "$match" ]; then
+    AUTH_HIT="$AUTH_HIT\n  - $match"
+  fi
+done
+
+if [ -n "$AUTH_HIT" ] && [ "$TANTIA_AUTH_UNLOCK" != "1" ]; then
+  printf '\n'
+  printf '🔒 ARCHIVOS BLINDADOS — PUSH BLOQUEADO\n'
+  printf '\n'
+  printf 'Los commits a pushear modifican archivos críticos de autenticación:\n'
+  printf '%b\n' "$AUTH_HIT"
+  printf '\n'
+  printf 'Estos archivos están bajo candado por mandato explícito de Alan\n'
+  printf 'Saldivar. Rompieron el dashboard antes. Nadie los toca ni pushea\n'
+  printf 'sin su autorización personal.\n'
+  printf '\n'
+  printf 'Si Alan autorizó explícitamente, ejecuta:\n'
+  printf '    TANTIA_AUTH_UNLOCK=1 git push\n'
+  printf '\n'
+  exit 1
+fi
+
+if [ -n "$AUTH_HIT" ]; then
+  printf '\n🔓 TANTIA_AUTH_UNLOCK=1 — permitiendo push de archivos blindados.\n\n'
+fi
+
+echo ""
+echo "🛡️  Tantia pre-push verification"
+echo "   Replica lo que Vercel correrá. Protege tus minutos pagados."
+echo ""
+
+# =============================================================================
+# Delegate to `tantia hooks verify` when the binary is available.
+# =============================================================================
+if pnpm exec tantia --version >/dev/null 2>&1; then
+  pnpm exec tantia hooks verify --quiet
+  exit $?
+fi
+
+echo "⚠️  tantia CLI no encontrado, usando gate inline (legacy)."
+echo "   Para activar el CLI: pnpm add -D @tantia-technologies/dev-tools"
+echo ""
+
+# =============================================================================
+# Legacy inline gate (fallback)
+# =============================================================================
+
+if pnpm run | grep -q "^  check:strings"; then
+  echo "▶ check:strings"
+  pnpm check:strings
+else
+  echo "⊘ check:strings — no existe en este repo, salto"
+fi
+
+echo ""
+
+if pnpm run | grep -q "^  typecheck"; then
+  echo "▶ typecheck"
+  pnpm typecheck
+else
+  echo "⊘ typecheck — no existe en este repo, salto"
+fi
+
+echo ""
+
+if pnpm run | grep -q "^  test"; then
+  echo "▶ test  (TDD obligatorio — Tantia ecosystem rule)"
+  pnpm test
+else
+  printf '\n'
+  printf '🚫 TDD OBLIGATORIO — PUSH BLOQUEADO\n'
+  printf '\n'
+  printf 'Este repo no tiene script "test" en package.json.\n'
+  printf 'En el ecosistema Tantia, TDD es regla no negociable: cada cambio\n'
+  printf 'se acompaña de tests que pasan antes de pushear.\n'
+  printf '\n'
+  printf 'Para resolver, agrega a package.json:\n'
+  printf '\n'
+  printf '    "scripts": {\n'
+  printf '      "test": "vitest run",\n'
+  printf '      "test:watch": "vitest"\n'
+  printf '    }\n'
+  printf '\n'
+  printf 'y crea al menos un test mínimo (cualquier .test.ts) que valide\n'
+  printf 'la pieza más crítica del repo.\n'
+  printf '\n'
+  printf 'Si esto es una emergencia documentada, puedes pushear con:\n'
+  printf '    git push --no-verify\n'
+  printf '\n'
+  exit 1
+fi
+
+echo ""
+
+if pnpm run | grep -q "^  build"; then
+  echo "▶ build  (esto tarda; captura prerender/import/asset errors)"
+  pnpm build
+else
+  echo "⚠️  build — no existe en este repo. NO se validó el deploy."
+  echo "   Si este repo deploya a Vercel, agrega un script \"build\" en package.json."
+fi
+
+echo ""
+echo "✅ Verificación local OK (incl. TDD). Pushing..."

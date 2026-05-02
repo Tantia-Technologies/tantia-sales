@@ -1,0 +1,91 @@
+#!/usr/bin/env sh
+
+# =============================================================================
+# Tantia shared pre-commit hook (v1)
+# Fuente: ~/Repos/Tantia/tools/hooks/pre-commit
+#
+# ⚠️  Este archivo se copia a .husky/pre-commit en cada repo vía
+#     `tools/bootstrap-all.sh`. NO editar la copia — editar la fuente.
+#
+# Propósito: blindar archivos críticos de autenticación. Si tocas uno sin
+# autorización explícita de Alan, el commit se rechaza.
+#
+# ESCAPE HATCH (sólo Alan): TANTIA_AUTH_UNLOCK=1 git commit ...
+# =============================================================================
+
+set -e
+
+# Archivos blindados — NO tocar sin autorización explícita de Alan Saldivar.
+# El fix que los dejó funcionando está en commit 174cc5b (tantia-erp).
+LOCKED_PATTERNS='
+apps/shell/lib/auth.ts
+apps/shell/proxy.ts
+apps/shell/app/(erp)/layout.tsx
+apps/shell/lib/auth/platform-admin.ts
+apps/shell/lib/routes/index.ts
+apps/shell/lib/auth-options.test.ts
+'
+
+STAGED="$(git diff --cached --name-only 2>/dev/null || true)"
+[ -z "$STAGED" ] && exit 0
+
+HIT=""
+for pattern in $LOCKED_PATTERNS; do
+  [ -z "$pattern" ] && continue
+  match="$(printf '%s\n' "$STAGED" | grep -Fx "$pattern" || true)"
+  if [ -n "$match" ]; then
+    HIT="$HIT\n  - $match"
+  fi
+done
+
+if [ -n "$HIT" ]; then
+  if [ "$TANTIA_AUTH_UNLOCK" != "1" ]; then
+    printf '\n'
+    printf '🔒 ARCHIVOS BLINDADOS — COMMIT BLOQUEADO\n'
+    printf '\n'
+    printf 'Estás intentando modificar archivos críticos de autenticación:\n'
+    printf '%b\n' "$HIT"
+    printf '\n'
+    printf 'Estos archivos están bajo candado por mandato explícito de Alan\n'
+    printf 'Saldivar. Rompió el dashboard antes. Nadie los toca sin su\n'
+    printf 'autorización personal — ni siquiera Claude.\n'
+    printf '\n'
+    printf 'Si Alan autorizó explícitamente este cambio, ejecuta:\n'
+    printf '    TANTIA_AUTH_UNLOCK=1 git commit ...\n'
+    printf '\n'
+    exit 1
+  else
+    printf '\n🔓 TANTIA_AUTH_UNLOCK=1 — permitiendo commit en archivos blindados.\n\n'
+  fi
+fi
+
+# =============================================================================
+# Validaciones opcionales (sólo se ejecutan si el repo las tiene configuradas).
+# Cualquier repo nuevo hereda este comportamiento sin tocar la copia local.
+# Saltar todo el bloque con SKIP_LOCAL_CHECKS=1 git commit ...
+# =============================================================================
+if [ "$SKIP_LOCAL_CHECKS" = "1" ]; then
+  printf '⏭  SKIP_LOCAL_CHECKS=1 — saltando lint-staged y tsc.\n'
+  exit 0
+fi
+
+# lint-staged: sólo si el repo lo declara en package.json
+if [ -f "package.json" ]; then
+  HAS_LINT_STAGED="$(node -e "try{const p=require('./package.json');process.stdout.write(((p['lint-staged']||(p.devDependencies&&p.devDependencies['lint-staged'])||(p.dependencies&&p.dependencies['lint-staged']))?'1':'0'))}catch(e){process.stdout.write('0')}" 2>/dev/null || echo 0)"
+  if [ "$HAS_LINT_STAGED" = "1" ]; then
+    pnpm exec lint-staged || exit 1
+  fi
+fi
+
+# tsc --noEmit: sólo si existe tsconfig.build.json
+if [ -f "tsconfig.build.json" ]; then
+  pnpm exec tsc --noEmit -p tsconfig.build.json || exit 1
+elif [ -f "tsconfig.json" ] && [ -f "package.json" ]; then
+  HAS_TYPECHECK="$(node -e "try{const p=require('./package.json');process.stdout.write(((p.scripts&&(p.scripts.typecheck||p.scripts['type-check']))?'1':'0'))}catch(e){process.stdout.write('0')}" 2>/dev/null || echo 0)"
+  if [ "$HAS_TYPECHECK" = "1" ]; then
+    SCRIPT_NAME="$(node -e "try{const p=require('./package.json');process.stdout.write(p.scripts.typecheck?'typecheck':'type-check')}catch(e){process.stdout.write('typecheck')}" 2>/dev/null)"
+    pnpm run "$SCRIPT_NAME" || exit 1
+  fi
+fi
+
+exit 0
